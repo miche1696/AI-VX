@@ -270,7 +270,36 @@ def initialize_ui():
     }
     return jsonify(init_data)
 
+
 @app.route('/upload_song', methods=['POST'])
+def upload_song():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    try:
+        # Process the file
+        audio, sr = librosa.load(file, sr=None)  # Load the audio file
+
+        # Analyze the audio file
+        tempo, _ = librosa.beat.beat_track(audio, sr=sr)
+        mood = analyze_mood(audio, sr)  # Assuming you have an analyze_mood function
+
+        # Prepare the response
+        response_data = {
+            'tempo': tempo,
+            'mood': mood
+        }
+        return jsonify(response_data)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500    
+
+
+@app.route('/handle_user_input', methods=['POST'])
 def handle_user_input():
     """
     Handles user inputs, such as song uploads.

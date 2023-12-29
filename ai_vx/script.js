@@ -32,7 +32,6 @@ function uploadSong(file) {
     .catch(error => console.error('Error uploading song:', error));
 }
 
-
 function requestVisuals(analysisData) {
     fetch('/get_visuals', {
         method: 'POST',
@@ -43,10 +42,18 @@ function requestVisuals(analysisData) {
     })
     .then(response => response.json())
     .then(visualsData => {
-        visualizeSong(visualsData);
+        updateVisualization(visualsData);
     })
     .catch(error => console.error('Error requesting visuals:', error));
 }
+
+function updateVisualization(visualsData) {
+    // Update global variables or states used in sketch.js
+    // Example:
+    visualizationParams.size = map(visualsData.tempo, 60, 180, 50, 300);
+    visualizationParams.color = getColorBasedOnMood(visualsData.mood);
+}
+
 
 function visualizeSong(visualsData) {
     // Update the visualization parameters based on the received data
