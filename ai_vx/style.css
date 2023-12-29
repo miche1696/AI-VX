@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#app {
+    margin: 20px;
+}
+
+#visualization {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    min-height: 300px;
+}
